@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import GameSection from './components/GameSection';
+import axios from "axios";
 import './App.css';
-
 function App() {
+  const [gameData, setGameData] = useState(undefined);
+  useEffect(() => {
+    if (!gameData) {
+      axios.get('http://localhost:9000/games')
+        .then(data => {
+          setGameData(data);
+          console.log(data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+    }
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <GameSection gameData ={gameData} />
     </div>
   );
 }
